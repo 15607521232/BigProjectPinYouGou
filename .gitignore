@@ -1,4 +1,37 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+.idea
+*.iml
+out
+gen
+##ignore this file##
+/target/
+.classpath
+.project
+.settings
+##filter databfile、sln file##
+*.mdb
+*.ldb
+*.sln
+##class file##
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+# compression file
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.via
+*.tmp
+*.err
 pinyougou-common/target/generated-sources/
 pinyougou-common/target/generated-test-sources/
 pinyougou-dao/src/test/
@@ -30,3 +63,5 @@ pinyougou-sellergoods-service/target/tomcat/webapps/
 pinyougou-sellergoods-service/target/tomcat/work/
 pinyougou-shop-web/target/pinyougou-shop-web/META-INF/
 pinyougou-shop-web/target/pinyougou-shop-web/WEB-INF/classes/
+pinyougou-manager-web/target/tomcat/logs/access_log.2021-12-01
+pinyougou-sellergoods-service/target/tomcat/logs/access_log.2021-12-01
