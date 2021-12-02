@@ -2,10 +2,12 @@
 
 .idea
 *.iml
-out
+
 gen
 ##ignore this file##
-/target/
+out/
+target/
+
 .classpath
 .project
 .settings
@@ -13,6 +15,7 @@ gen
 *.mdb
 *.ldb
 *.sln
+*.lst
 ##class file##
 *.com
 *.class
@@ -26,9 +29,29 @@ gen
 *.gz
 *.iso
 *.jar
+*.war
 *.rar
 *.tar
 *.zip
 *.via
 *.tmp
 *.err
+pinyougou-common/target/generated-sources/
+pinyougou-common/target/generated-test-sources/
+pinyougou-dao/target/generated-sources/
+pinyougou-manager-web/target/generated-sources/
+pinyougou-manager-web/target/pinyougou-manager-web/META-INF/
+pinyougou-manager-web/target/pinyougou-manager-web/admin/
+pinyougou-manager-web/target/pinyougou-manager-web/css/
+pinyougou-manager-web/target/pinyougou-manager-web/img/
+pinyougou-manager-web/target/pinyougou-manager-web/js/
+pinyougou-manager-web/target/pinyougou-manager-web/login.html
+pinyougou-manager-web/target/pinyougou-manager-web/plugins/
+pinyougou-pojo/target/generated-sources/
+pinyougou-pojo/target/generated-test-sources/
+pinyougou-sellergoods-interface/target/generated-sources/
+pinyougou-sellergoods-interface/target/generated-test-sources/
+pinyougou-sellergoods-service/target/generated-sources/
+pinyougou-sellergoods-service/target/pinyougou-sellergoods-service/META-INF/
+pinyougou-shop-web/target/pinyougou-shop-web/META-INF/
+pinyougou-shop-web/target/pinyougou-shop-web/WEB-INF/classes/

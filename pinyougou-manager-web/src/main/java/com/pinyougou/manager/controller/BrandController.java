@@ -20,6 +20,8 @@ public class BrandController {
     @Reference
     private BrandService brandService;
 
+    //testGitignore
+
     @RequestMapping("/findAll")
     public List<TbBrand> findAll(){
         return brandService.findAll();
