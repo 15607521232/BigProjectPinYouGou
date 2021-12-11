@@ -50,7 +50,7 @@ pinyougou-manager-web/target/pinyougou-manager-web/plugins/
 pinyougou-pojo/target/generated-sources/
 pinyougou-pojo/target/generated-test-sources/
 pinyougou-sellergoods-interface/target/generated-sources/
-pinyougou-sellergoods-interface/target/generated-test-sources/
+pinyougou-sellergoods-interface/target/generated-test-sources
 pinyougou-sellergoods-service/target/generated-sources/
 pinyougou-sellergoods-service/target/pinyougou-sellergoods-service/META-INF/
 pinyougou-shop-web/target/pinyougou-shop-web/META-INF/
