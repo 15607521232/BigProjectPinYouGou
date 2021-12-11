@@ -27,4 +27,9 @@ public interface BrandService {
      * 修改
      */
     public void update(TbBrand brand);
+
+    /**
+     * 删除
+     */
+    public void delete(Long [] ids);
 }

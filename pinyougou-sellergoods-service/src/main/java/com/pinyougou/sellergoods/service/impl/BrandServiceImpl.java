@@ -49,5 +49,13 @@ public class BrandServiceImpl implements BrandService {
 
 	}
 
+	@Override
+	public void delete(Long[] ids) {
+		for(Long id:ids){
+			brandMapper.deleteByPrimaryKey(id);
+		}
+
+	}
+
 
 }
