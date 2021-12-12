@@ -32,4 +32,7 @@ public interface BrandService {
      * 删除
      */
     public void delete(Long [] ids);
+
+
+    public PageResult findPage(TbBrand brand,int pageNum,int pageSize);
 }
