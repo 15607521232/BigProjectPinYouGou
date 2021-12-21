@@ -64,7 +64,7 @@ public class BrandServiceImpl implements BrandService {
 
 
 		TbBrandExample example = new TbBrandExample();//封装查询条件
-		TbBrandExample.Criteria criteria = example.createCriteria();//构建查询条件的类
+	    TbBrandExample.Criteria criteria = example.createCriteria();//构建查询条件的类
 
 		if(brand!=null){
 			if(brand.getName()!=null&&brand.getName().length()>0){
@@ -77,7 +77,7 @@ public class BrandServiceImpl implements BrandService {
 		}
 
 
-		Page<TbBrand> page = (Page<TbBrand>)brandMapper.selectByExample(null);
+		Page<TbBrand> page = (Page<TbBrand>)brandMapper.selectByExample(example);
 		return new PageResult(page.getTotal(),page.getResult());
 
 	}
