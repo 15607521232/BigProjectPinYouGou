@@ -1,5 +1,5 @@
  //控制层 
-app.controller('specificationController' ,function($scope,$controller   ,specificationService){	
+app.controller('specificationController',function($scope,$controller,specificationService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -63,7 +63,7 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 				}						
 			}		
 		);				
-	}
+	};
 	
 	$scope.searchEntity={};//定义搜索对象 
 	
@@ -75,6 +75,20 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
-	}
+	};
+
+
+	//增加规格选项行
+	$scope.addTableRow=function () {
+		$scope.entity.specificationOptionList.push({});
+    }
+
+
+    //删除规格选项行
+    $scope.deleteTableRow=function (index) {
+        $scope.entity.specificationOptionList.splice(index,1);
+    }
+
+
     
 });	
