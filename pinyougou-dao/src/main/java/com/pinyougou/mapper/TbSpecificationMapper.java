@@ -3,6 +3,8 @@ package com.pinyougou.mapper;
 import com.pinyougou.pojo.TbSpecification;
 import com.pinyougou.pojo.TbSpecificationExample;
 import java.util.List;
+
+import com.pinyougou.pojogroup.Specification;
 import org.apache.ibatis.annotations.Param;
 
 public interface TbSpecificationMapper {
@@ -12,7 +14,7 @@ public interface TbSpecificationMapper {
 
     int deleteByPrimaryKey(Long id);
 
-    int insert(TbSpecification record);
+    int insert(Specification record);
 
     int insertSelective(TbSpecification record);
 

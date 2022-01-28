@@ -1,8 +1,10 @@
 package com.pinyougou.pojo;
 
+import com.pinyougou.pojogroup.Specification;
+
 import java.io.Serializable;
 
-public class TbSpecification implements Serializable {
+public class TbSpecification extends Specification implements Serializable {
     private Long id;
 
     private String specName;
