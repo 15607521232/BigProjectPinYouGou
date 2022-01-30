@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.pojo.TbSpecificationOption;
+import com.pinyougou.pojo.TbSpecificationOptionExample;
 import com.pinyougou.pojogroup.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -74,8 +75,25 @@ public class SpecificationServiceImpl implements SpecificationService {
 	 * 修改
 	 */
 	@Override
-	public void update(TbSpecification specification){
-		specificationMapper.updateByPrimaryKey(specification);
+	public void update(Specification specification){
+
+		//修改规格
+		specificationMapper.updateByPrimaryKey(specification.getSpecification());
+
+		//删除此规格的所有规格选项
+		TbSpecificationOptionExample example = new TbSpecificationOptionExample();
+		TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
+		criteria.andSpecIdEqualTo(specification.getSpecification().getId());//指定规格ID
+		specificationOptionMapper.deleteByExample(example);
+
+
+
+		//重新添加
+		for(TbSpecificationOption specificationOption:specification.getSpecificationOptionList()){
+			specificationOption.setSpecId(specification.getSpecification().getId());
+			specificationOptionMapper.insert(specificationOption);
+
+		}
 	}	
 	
 	/**
@@ -84,8 +102,22 @@ public class SpecificationServiceImpl implements SpecificationService {
 	 * @return
 	 */
 	@Override
-	public TbSpecification findOne(Long id){
-		return specificationMapper.selectByPrimaryKey(id);
+	public Specification findOne(Long id){
+
+		//查询规格
+		TbSpecification tbSpecification = specificationMapper.selectByPrimaryKey(id);
+
+		//查询规格选线列表
+		TbSpecificationOptionExample example = new TbSpecificationOptionExample();
+		TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
+		criteria.andSpecIdEqualTo(id);//按照规格ID查询
+		List<TbSpecificationOption> specificationOptionList = specificationOptionMapper.selectByExample(example);
+
+		//封装到组合实体类
+		Specification specification = new Specification();
+		specification.setSpecification(tbSpecification);
+		specification.setSpecificationOptionList(specificationOptionList);
+		return specification;
 	}
 
 	/**
