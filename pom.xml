@@ -44,6 +44,7 @@
     <security.version>3.2.3.RELEASE</security.version>
     <solrj.version>4.10.3</solrj.version>
     <ik.version>2012_u6</ik.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencyManagement>
