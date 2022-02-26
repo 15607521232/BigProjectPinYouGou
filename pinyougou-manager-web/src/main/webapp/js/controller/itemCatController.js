@@ -67,21 +67,26 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	
 	$scope.searchEntity={};//定义搜索对象 
 	
-	//搜索
-	$scope.search=function(page,rows){			
-		itemCatService.search(page,rows,$scope.searchEntity).success(
-			function(response){
-				$scope.list=response.rows;	
-				$scope.paginationConf.totalItems=response.total;//更新总记录数
-			}			
-		);
-	}
+
 
 
 	$scope.findByParentId=function (parentId){
 		itemCatService.findByParentId(parentId).success(function (response){
 			$scope.list=response;
 		})
+	}
+
+	//定义面包屑
+	$scope.breadcrumb = [{id:0,name:"顶级商品分类"}];
+
+	$scope.search=function (id,name){
+		$scope.breadcrumb.push({id:id,name:name});//向面包屑插入数据
+		$scope.findByParentId(id);//查询列表
+	}
+
+	$scope.showList=function (index,id){
+		$scope.breadcrumb.splice(index+1,2);//截断面包屑
+		$scope.findByParentId(id);//查询列表
 	}
     
 });	
