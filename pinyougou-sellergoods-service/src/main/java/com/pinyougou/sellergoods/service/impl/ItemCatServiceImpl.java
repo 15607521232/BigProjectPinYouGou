@@ -73,6 +73,14 @@ public class ItemCatServiceImpl implements ItemCatService {
 	 */
 	@Override
 	public void delete(Long[] ids) {
+		//判断每个ID是否有下级分类
+		for(Long id:ids){
+			List<TbItemCat> list =findByParentId(id);
+			if(list.size()>0){
+				throw new RuntimeException("不能删除有下级分类的分类");
+			}
+		}
+
 		for(Long id:ids){
 			itemCatMapper.deleteByPrimaryKey(id);
 		}		

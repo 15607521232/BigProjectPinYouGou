@@ -93,6 +93,9 @@ public class ItemCatController {
 		try {
 			itemCatService.delete(ids);
 			return new Result(true, "删除成功"); 
+		} catch (RuntimeException e){
+			e.printStackTrace();
+			return new Result(false,e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, "删除失败");
@@ -101,7 +104,7 @@ public class ItemCatController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param itemCat
 	 * @param page
 	 * @param rows
 	 * @return

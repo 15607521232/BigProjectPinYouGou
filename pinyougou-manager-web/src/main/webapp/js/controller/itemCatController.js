@@ -1,5 +1,5 @@
  //控制层 
-app.controller('itemCatController' ,function($scope,$controller   ,itemCatService){	
+app.controller('itemCatController' ,function($scope,$controller   ,itemCatService,typeTemplateService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -43,7 +43,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			function(response){
 				if(response.success){
 					//重新查询 
-		        	$scope.reloadList();//重新加载
+		        	$scope.findByParentId($scope.entity.parentId);//重新加载
 				}else{
 					alert(response.message);
 				}
@@ -58,19 +58,25 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 		itemCatService.dele( $scope.selectIds ).success(
 			function(response){
 				if(response.success){
-					$scope.reloadList();//刷新列表
+					$scope.findByParentId($scope.entity.parentId);//刷新列表
 					$scope.selectIds=[];
-				}						
+				}
+				else {
+					alert(response.message);
+				}
 			}		
 		);				
 	}
 	
-	$scope.searchEntity={};//定义搜索对象 
+	$scope.searchEntity={};//定义搜索对象
+
+	$scope.entity={findByParentId:0};
 	
 
 
 
 	$scope.findByParentId=function (parentId){
+		$scope.entity={parentId:parentId};
 		itemCatService.findByParentId(parentId).success(function (response){
 			$scope.list=response;
 		})
@@ -87,6 +93,23 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	$scope.showList=function (index,id){
 		$scope.breadcrumb.splice(index+1,2);//截断面包屑
 		$scope.findByParentId(id);//查询列表
+	}
+
+	$scope.typeTemplateMap=[];
+
+	$scope.findtypeTemplateList=function (){
+		typeTemplateService.findAll().success(function (response){
+			$scope.typeTemplateList=response;//模板列表
+
+			//构建模板数据，用于列表显示名称
+			$scope.typeTemplateMap=[];
+			for (let i = 0; i < $scope.typeTemplateList.length; i++) {
+				var typeTemplate = $scope.typeTemplateList[i];
+				$scope.typeTemplateMap[typeTemplate.id]=typeTemplate.name;
+
+			}
+
+		})
 	}
     
 });	

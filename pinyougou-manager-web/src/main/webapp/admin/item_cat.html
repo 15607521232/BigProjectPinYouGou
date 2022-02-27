@@ -19,12 +19,13 @@
 
 	<script type="text/javascript" src="../js/base.js"></script>
 	<script type="text/javascript" src="../js/service/itemCatService.js"></script>
+	<script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
 	<script type="text/javascript" src="../js/controller/baseController.js"></script>
 	<script type="text/javascript" src="../js/controller/itemCatController.js"></script>
     
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0)" >
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0);findtypeTemplateList()">
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -47,7 +48,7 @@
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
-                                        <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>
+                                        <button type="button" class="btn btn-default" title="删除" ng-click="dele()" ><i class="fa fa-trash-o"></i> 删除</button>
                                         <button type="button" class="btn btn-default" title="刷新" ><i class="fa fa-check"></i> 刷新</button>
                                        
                                     </div>
@@ -71,15 +72,15 @@
 			                      </thead>
 			                      <tbody>
 			                          <tr ng-repeat="entity in list" >
-			                              <td><input  type="checkbox" ></td>			                              
+			                              <td><input  type="checkbox" ng-click="updateSelection($event,entity.id)"></td>
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.name}}</td>
 									      <td>
-									      	{{entity.typeId}}
+									      	{{typeTemplateMap[entity.typeId]}}
 									      </td>									      
 		                                  <td class="text-center">		                                     
 		                                      <button ng-if="breadcrumb.length<3" type="button"  class="btn bg-olive btn-xs" ng-click="search(entity.id,entity.name)" >查询下级</button>
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
+		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id)" >修改</button>
 		                                  </td>
 			                          </tr>
 			                      </tbody>
@@ -110,24 +111,27 @@
 				<tr>
 		      		<td>上级商品分类</td>
 		      		<td>
-		      		   珠宝 >>  银饰
+		      		   <span ng-repeat="pojo in breadcrumb">
+						   {{pojo.name}} >>
+					   </span>
 		      		</td>
 		      	</tr>
 		      	<tr>
 		      		<td>商品分类名称</td>
-		      		<td><input  class="form-control" placeholder="商品分类名称">  </td>
+		      		<td><input ng-model="entity.name" class="form-control" placeholder="商品分类名称">  </td>
 		      	</tr>			  
 		      	<tr>
 		      		<td>类型模板</td>
 		      		<td>	      		
-		      			<input select2 config="options['type_template']" placeholder="商品类型模板" class="form-control" type="text"/>
+		      			<input ng-model= "entity.typeId" placeholder="商品类型模板" class="form-control" type="text"/>
+						<select ng-model="entity.typeId" ng-options=" item.id as item.name for item in typeTemplateList"></select>
 		      		</td>		      		      		
 		      	</tr>		      	
 			 </table>				
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+			<button class="btn btn-success" data-dismiss="modal" ng-click="save()" aria-hidden="true">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>
