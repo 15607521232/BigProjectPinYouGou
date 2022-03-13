@@ -9,6 +9,8 @@
 
     <!-- 设置页面不登陆也可以访问 -->
     <http pattern="/shoplogin.html" security="none"></http>
+    <http pattern="/register.html" security="none"></http>
+    <http pattern="/seller/add.do" security="none"></http>
     <http pattern="/css/**" security="none"></http>
     <http pattern="/img/**" security="none"></http>
     <http pattern="/js/**" security="none"></http>
@@ -17,7 +19,7 @@
     <!-- 页面的拦截规则    use-expressions:是否启动SPEL表达式 默认是true -->
     <http use-expressions="false">
         <!-- 当前用户必须有ROLE_USER的角色 才可以访问根目录及所属子目录的资源 -->
-        <intercept-url pattern="/**" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/**" access="ROLE_USER"/>
         <!-- 开启表单登陆功能 -->
         <form-login  login-page="/shoplogin.html" default-target-url="/admin/index.html" authentication-failure-url="/login.html" always-use-default-target="true"/>
         <csrf disabled="true"/>
@@ -33,6 +35,7 @@
     <!-- 认证管理器 用于定义用户与角色的对应关系 -->
     <authentication-manager>
         <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder ref="encoder"></password-encoder>
         </authentication-provider>
     </authentication-manager>
 
@@ -43,6 +46,11 @@
     <beans:bean id="userDetailsService" class="com.pinyougou.shop.service.UserDetailsServiceImpl">
         <beans:property name="sellerService" ref="sellerService"></beans:property>
     </beans:bean>
+
+
+
+    <!--配置解密-->
+    <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></beans:bean>
 
 
 </beans:beans>

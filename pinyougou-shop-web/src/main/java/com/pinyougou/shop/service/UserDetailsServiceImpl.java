@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("经过了UserDetailsServiceImpl");
         //构建角色列表
         List<GrantedAuthority> grantAuths=new ArrayList();
-        grantAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        grantAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         //根据登录名称查询商家对象
 
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }else {
 
             if("1".equals(seller.getStatus())){
-                return new User(username,"123456",grantAuths);
+                return new User(username,seller.getPassword(),grantAuths);
             }else {
                 return null;
             }
