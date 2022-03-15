@@ -34,12 +34,16 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 	//保存 
 	$scope.add=function(){
 
+
+		$scope.entity.goodsDesc.introduction=editor.html();//商品介绍
+
 		goodsService.add( $scope.entity  ).success(
 			function(response){
 				alert(response.message);
 				if(response.success){
 					//重新查询 
 		        	$scope.entity={};
+		        	editor.html("")//清空富文本编辑器
 				}
 			}		
 		);				
