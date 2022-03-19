@@ -18,7 +18,7 @@ import java.util.Map;
 public class UploadController {
 
     //获取dfs服务器
-    @Value("$FILE_SERVER_URL")
+    @Value("${FILE_SERVER_URL}")
     private String file_server_url;
 
     @Autowired

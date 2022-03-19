@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService){	
+app.controller('goodsController' ,function($scope,$controller   ,goodsService,uploadService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -73,6 +73,26 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
+	}
+
+	$scope.image_entity={};
+
+	$scope.uploadImage=function (){
+		uploadService.upload().success(function (response){
+			if(response.error==0){
+				$scope.image_entity.url=response.url;
+
+			}
+		})
+	}
+
+	$scope.entity={goods:{},goodsDesc:{itemImages:[]}};//商品实体
+	$scope.add_image_entity=function (){
+		$scope.entity.goodsDesc.itemImages.push($scope.image_entity)
+	}
+
+	$scope.remove_image_entity=function (index){
+		$scope.entity.goodsDesc.itemImages.splice(index,1)
 	}
     
 });	
