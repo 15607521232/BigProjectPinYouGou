@@ -26,6 +26,7 @@
 	<script type="text/javascript" src="../js/base.js"></script>
 	<script type="text/javascript" src="../js/service/goodsService.js"></script>
 	<script type="text/javascript" src="../js/service/itemCatService.js"></script>
+	<script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
 	<script type="text/javascript" src="../js/service/uploadService.js"></script>
 	<script type="text/javascript" src="../js/controller/baseController.js"></script>
 	<script type="text/javascript" src="../js/controller/goodsController.js"></script>
@@ -101,7 +102,7 @@
 		                           
 		                           <div class="col-md-2 title">品牌</div>
 		                           <div class="col-md-10 data">
-		                              <select class="form-control" ></select>
+		                              <select class="form-control" ng-model="entity.goods.brandId" ng-options=" item.id as item.text for item in typeTemplate.brandIds" ></select>
 		                           </div>
 		
 								   <div class="col-md-2 title">副标题</div>
