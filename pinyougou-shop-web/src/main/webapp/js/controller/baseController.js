@@ -46,4 +46,15 @@ app.controller('baseController',function ($scope) {
         return value;
     }
 
+    //在集合中查询某字段的值为某值的对象
+    $scope.searchObjectByKey=function (list,key,value){
+        for (let i = 0; i < list.length; i++) {
+            if(list[i][key]==value){
+                return list[i];
+            }
+        }
+        return null;
+
+    }
+
 });

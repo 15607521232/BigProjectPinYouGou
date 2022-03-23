@@ -86,7 +86,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 		})
 	}
 
-	$scope.entity={goods:{},goodsDesc:{itemImages:[]}};//商品实体
+	$scope.entity={goods:{},goodsDesc:{itemImages:[],specificationItems:[]}};//商品实体
 	$scope.add_image_entity=function (){
 		$scope.entity.goodsDesc.itemImages.push($scope.image_entity)
 	}
@@ -133,9 +133,19 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 			$scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds)//品牌列表由字符串转换为对象
 			$scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems)//扩展属性
 		})
+		typeTemplateService.findSpecList(newValue).success(function (response){
+			$scope.specList = response;
+		})
 
 
 	})
+
+	//更新选中的规格
+	$scope.updateSpecItems=function ($event,name,value){
+		//思路 在集合中查询name
+	}
+
+
 
 
 });
