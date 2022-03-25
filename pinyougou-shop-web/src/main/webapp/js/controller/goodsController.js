@@ -162,6 +162,36 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	}
 
 
+	//创建SKU列表
+	$scope.createItemList=function (){
+		$scope.entity.itemList=[{spec:{},price:0,num:999,status:"1",isDefault:"0"}];
+
+		var items = $scope.entity.goodsDesc.specificationItems;
+		for (let i = 0; i < items.length; i++) {
+
+			$scope.entity.itemList = addColumn($scope.entity.itemList,items[i].attributeName,items[i].attributeValue);
+
+		}
+	}
+
+
+	//添加列值
+	addColumn=function (list,columnName,columnValues){
+
+		var newList = []; //新的集合
+		for (let i = 0; i < list.length; i++) {
+			var oldRow = list[i];
+			for (let j = 0; j < columnValues.length; j++) {
+				var newRow = JSON.parse(JSON.stringify(oldRow));//深克隆
+				newRow.spec[columnName]=columnValues[j];
+				newList.push(newRow);
+			}
+		}
+
+		return newList;
+	}
+
+
 
 
 });
