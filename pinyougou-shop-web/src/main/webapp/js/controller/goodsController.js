@@ -141,8 +141,24 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	})
 
 	//更新选中的规格
+	//[{"attributeName":"网络制式","attributeValue":["移动3G","移动4G"]},{"attributeName":"屏幕尺寸","attributeValue":["6寸","5寸"]}]
 	$scope.updateSpecItems=function ($event,name,value){
-		//思路 在集合中查询name
+		//思路 在集合中中查询规格名称为某值的对象
+		var object =  $scope.searchObjectByKey($scope.entity.goodsDesc.specificationItems,"attributeName",name);
+		if(object!=null){
+			//有此规格
+			if($event.target.checked){
+				object.attributeValue.push(value);
+			}else {
+				object.attributeValue.splice(object.attributeValue.indexOf(value),1);
+				if(object.attributeValue.length==0){
+					$scope.entity.goodsDesc.specificationItems.splice($scope.entity.goodsDesc.specificationItems.indexOf(object),1);
+				}
+			}
+		}else {//没有此规格，添加规格记录
+			$scope.entity.goodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]});
+
+		}
 	}
 
 
