@@ -191,6 +191,19 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 		return newList;
 	}
 
+	$scope.status=['未审核','已审核','审核未通过','已关闭']
+
+	$scope.itemCatList=[];//商品分类列表
+
+	//加载商品分类列表
+	$scope.findItemCatList=function (){
+		itemCatService.findAll().success(function (response){
+			for (let i = 0; i < response.length; i++) {
+				$scope.itemCatList[response[i].id] = response[i].name;
+			}
+		})
+	}
+
 
 
 
