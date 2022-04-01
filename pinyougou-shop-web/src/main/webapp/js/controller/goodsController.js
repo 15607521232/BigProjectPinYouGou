@@ -43,6 +43,11 @@ app.controller('goodsController' ,function($scope,$controller   ,$location,goods
 
 				//读取规格
 				$scope.entity.goodsDesc.specificationItems=JSON.parse($scope.entity.goodsDesc.specificationItems);
+
+				//SKU列表规格列转换
+				for (let i = 0; i < $scope.entity.itemList.length; i++) {
+					$scope.entity.itemList[i].spec = JSON.parse($scope.entity.itemList[i].spec);
+				}
 			}
 		);				
 	}
