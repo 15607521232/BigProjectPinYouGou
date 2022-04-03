@@ -34,7 +34,7 @@ public interface GoodsService {
 	/**
 	 * 修改
 	 */
-    void update(TbGoods goods);
+    void update(Goods goods);
 	
 
 	/**
@@ -58,5 +58,7 @@ public interface GoodsService {
 	 * @return
 	 */
     PageResult findPage(TbGoods goods, int pageNum, int pageSize);
+
+    void updateStatus(Long [] ids,String status);
 	
 }

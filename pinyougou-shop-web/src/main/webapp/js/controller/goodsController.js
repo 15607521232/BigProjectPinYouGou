@@ -53,21 +53,26 @@ app.controller('goodsController' ,function($scope,$controller   ,$location,goods
 	}
 	
 	//保存 
-	$scope.add=function(){
+	$scope.save=function(){
 
 
 		$scope.entity.goodsDesc.introduction=editor.html();//商品介绍
+		var serviceObject;
+		if($scope.entity.goods.id!=null){
+			serviceObject=goodsService.update($scope.entity);//修改
+		}else {
+			serviceObject=goodsService.add($scope.entity);增加
+		}
 
-		goodsService.add( $scope.entity  ).success(
-			function(response){
+		serviceObject.success(
+			function (response){
+			if(response.success){
+				alert("保存成功");
+				location.href="goods.html";//跳转到商品列表页
+			}else {
 				alert(response.message);
-				if(response.success){
-					//重新查询 
-		        	$scope.entity={};
-		        	editor.html("")//清空富文本编辑器
-				}
-			}		
-		);				
+			}
+		})
 	}
 	
 	 
