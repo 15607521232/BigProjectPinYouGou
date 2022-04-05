@@ -20,6 +20,7 @@ import entity.PageResult;
 @Service
 public class ContentServiceImpl implements ContentService {
 
+
 	@Autowired
 	private TbContentMapper contentMapper;
 	
@@ -104,6 +105,21 @@ public class ContentServiceImpl implements ContentService {
 		
 		Page<TbContent> page= (Page<TbContent>)contentMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
+	}
+
+
+	@Override
+	public List<TbContent> findByCategoryId(Long categoryId) {
+		//根据广告分类ID查询广告列表
+
+
+		TbContentExample example = new TbContentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andCategoryIdEqualTo(categoryId);
+		criteria.andStatusEqualTo("1");//开启状态
+		example.setOrderByClause("sort_order");//排序
+
+		return contentMapper.selectByExample(example);
 	}
 	
 }

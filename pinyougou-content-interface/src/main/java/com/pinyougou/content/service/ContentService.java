@@ -57,5 +57,8 @@ public interface ContentService {
 	 * @return
 	 */
 	PageResult findPage(TbContent content, int pageNum, int pageSize);
+
+
+	List<TbContent> findByCategoryId(Long categoryId);
 	
 }
