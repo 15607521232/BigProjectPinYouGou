@@ -1,6 +1,7 @@
 package com.pinyougou.manager.controller;
 
 import com.alibaba.fastjson.JSON;
+import entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,38 +22,24 @@ public class UploadController {
     @Value("${FILE_SERVER_URL}")
     private String file_server_url;
 
-    @Autowired
-    private HttpServletResponse response;
 
 
     @RequestMapping("/upload")
-    public void upload(@RequestParam("imgFile") MultipartFile [] imgFile){
+    public Result upload(MultipartFile imgFile){
 
-        //调用工具类
+        //获取文件名
+        String originalFileName = imgFile.getOriginalFilename();
+        String extName = originalFileName.substring(originalFileName.lastIndexOf(".")+1);
+
         try {
-
-            PrintWriter out = response.getWriter();
-            FastDFSClient client =  new FastDFSClient("classpath:config/fdfs_client.conf");
-
-            for(MultipartFile file:imgFile){
-
-                //获取上传文件的扩展名
-                String fileName = file.getOriginalFilename();
-                String extName = fileName.substring(fileName.lastIndexOf(".")+1);
-                String path =  client.uploadFile(file.getBytes(),extName,null);
-
-
-                //error   url
-                Map map = new HashMap();
-                map.put("error",0);
-                map.put("url",file_server_url + path);
-                String json = JSON.toJSONString(map);
-                out.print(json);
-            }
-            out.close();
-
-        } catch (Exception e) {
+            util.FastDFSClient client = new FastDFSClient("classpath:config/fdfs_client.conf");
+            String fileId = client.uploadFile(imgFile.getBytes(),extName);
+            String url =file_server_url+fileId;//图片完整地址
+            return new Result(true,url);
+        }catch (Exception e){
             e.printStackTrace();
+            return new Result(false,"上传失败");
+
         }
 
 

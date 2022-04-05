@@ -2,10 +2,10 @@
 app.service('uploadService',function($http){
 
     //读取列表数据绑定到表单中
-    this.upload=function(){
+    this.uploadFile=function(){
 
         var formData = new FormData();//表单数据对象
-        formData.append("imgFile",file.files[0]);
+        formData.append("imgFile",imgFile.files[0]);
         return $http({
             url:"../upload.do",
             method:"POST",
