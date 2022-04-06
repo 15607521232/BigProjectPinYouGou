@@ -527,10 +527,10 @@
 					<!--banner轮播-->
 					<div id="myCarousel" data-ride="carousel" data-interval="4000" class="sui-carousel slide">
 					  <ol class="carousel-indicators">
-						  <li data-target="#myCarousel" data-slide-to="{{$index}}" class="" ng-repeat="item in contentList[1]" ></li>
+						  <li data-target="#myCarousel" data-slide-to="{{$index}}" class="{{$index==0?'active':''}}" ng-repeat="item in contentList[1]" ></li>
 					  </ol>
 					  <div class="carousel-inner">
-					    <div class="item" ng-repeat="item in contentList[1]">
+					    <div class="{{$index==0?'active':''}} item" ng-repeat="item in contentList[1]">
 					    <a href="{{item.url}}">
 					    	<img src="{{item.pic}}"  />
 					      </a>
