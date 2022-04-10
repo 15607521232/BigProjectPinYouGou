@@ -21,6 +21,8 @@ public class SolrUtil {
     @Autowired
     private TbItemMapper itemMapper;
 
+
+    //引入Solr模板
     @Autowired
     private SolrTemplate solrTemplate;
 
