@@ -36,17 +36,13 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         List<String> categoryList = searchCategoryList(searchMap);
         map.put("categoryList",categoryList);
 
-        //查询品牌和规格列表
-        if(categoryList.size()>0){
-            map.putAll(searchBrandAndSpecList(categoryList.get(0)));
-        }
 
         //查询品牌和规格列表
         String categoryName = (String) searchMap.get("category");
-        if(!"".equals(categoryName)){
+        if(!categoryName.equals("")){//如果有分类名称
             map.putAll(searchBrandAndSpecList(categoryName));
         }else {
-            if(categoryList.size()>0){
+            if(categoryList.size()>0){//如果没有分类名称，按照第一个查询
                 map.putAll(searchBrandAndSpecList(categoryList.get(0)));
             }
         }
