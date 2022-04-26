@@ -29,15 +29,15 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
         Map map = new HashMap();
 
-        //查询列表
+        //1查询列表
         map.putAll(searchList(searchMap));
 
-        //分组查询 商品分类列表
+        //2分组查询 商品分类列表
         List<String> categoryList = searchCategoryList(searchMap);
         map.put("categoryList",categoryList);
 
 
-        //查询品牌和规格列表
+        //3查询品牌和规格列表
         String categoryName = (String) searchMap.get("category");
         if(!categoryName.equals("")){//如果有分类名称
             map.putAll(searchBrandAndSpecList(categoryName));
@@ -98,6 +98,26 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             }
 
         }
+
+        //1.5按照价格筛选
+        if(!"".equals(searchMap.get("price"))){//如果用户选择了价格
+            String [] price=((String) searchMap.get("price")).split("-");
+            if(!price[0].equals("0")){//如果区间起点不为0
+
+                Criteria filterCriteria = new Criteria("item_price").greaterThanEqual(price[0]);
+                FilterQuery filterQuery = new SimpleFilterQuery(filterCriteria);
+                query.addFilterQuery(filterQuery);
+            }
+
+            if(!price[1].equals("*")){//如果区间终点不为*
+
+                Criteria filterCriteria = new Criteria("item_price").lessThanEqual(price[1]);
+                FilterQuery filterQuery = new SimpleFilterQuery(filterCriteria);
+                query.addFilterQuery(filterQuery);
+            }
+
+        }
+
 
 
 
