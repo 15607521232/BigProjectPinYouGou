@@ -5,6 +5,7 @@ import com.pinyougou.pojo.TbItem;
 import com.pinyougou.search.service.ItemSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.*;
@@ -60,6 +61,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     //查询列表
     private Map searchList(Map searchMap){
         Map map = new HashMap();
+
+        String keywords = (String)searchMap.get("keywords");
+        searchMap.put("keywords",keywords.replace(" ",""));
 
         //高亮选项初始化
         HighlightQuery query = new SimpleHighlightQuery();
@@ -132,6 +136,20 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         query.setRows(pageSize);
 
 
+        //按照价格排序
+        String sortValue =  (String) searchMap.get("sort");
+        String sortField =  (String) searchMap.get("sortField");
+        if(sortValue!=null && !sortValue.equals("")){
+            if(sortValue.equals("ASC")){
+                Sort sort = new Sort(Sort.Direction.ASC,"item_"+sortField);
+                query.addSort(sort);
+            }
+
+            if(sortValue.equals("DESC")){
+                Sort sort = new Sort(Sort.Direction.DESC,"item_"+sortField);
+                query.addSort(sort);
+            }
+        }
 
 
 
