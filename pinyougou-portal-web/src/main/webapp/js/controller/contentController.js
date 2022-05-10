@@ -9,6 +9,12 @@ app.controller("contentController",function ($scope,contentService){
             }
         )
     }
+
+
+    //搜索(传递参数)
+    $scope.search=function(){
+        location.href="http://localhost:9104/search.html#?keywords="+$scope.keywords;
+    }
     }
 
 
