@@ -3,6 +3,7 @@ package com.pinyougou.page.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.pinyougou.mapper.TbGoodsDescMapper;
 import com.pinyougou.mapper.TbGoodsMapper;
+import com.pinyougou.mapper.TbItemCatMapper;
 import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsDesc;
@@ -29,6 +30,10 @@ public class ItemPageServiceImpl implements ItemPageService {
     @Autowired
     private TbGoodsDescMapper tbGoodsDescMapper;
 
+
+    @Autowired
+    private TbItemCatMapper tbItemCatMapper;
+
     @Override
     public boolean genItemHtml(Long goodsId) {
         try {
@@ -41,8 +46,18 @@ public class ItemPageServiceImpl implements ItemPageService {
             //2.加载商品扩展表数据
             TbGoodsDesc goodsDesc = tbGoodsDescMapper.selectByPrimaryKey(goodsId);
             dataModel.put("goodsDesc", goodsDesc);
+
+            String itemCat1 = tbItemCatMapper.selectByPrimaryKey(goods.getCategory1Id()).getName();
+            String itemCat2 = tbItemCatMapper.selectByPrimaryKey(goods.getCategory2Id()).getName();
+            String itemCat3 = tbItemCatMapper.selectByPrimaryKey(goods.getCategory3Id()).getName();
+
+            dataModel.put("itemCat1",itemCat1);
+            dataModel.put("itemCat2",itemCat2);
+            dataModel.put("itemCat3",itemCat3);
             Writer out= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pagedir+goodsId+".html"),"UTF-8"));
             template.process(dataModel, out);
+
+
             out.close();
             return true;
         } catch (Exception e) {

@@ -18,6 +18,9 @@
 
 <!--页面顶部 开始-->
 <#include "head.ftl">
+<#assign imageList=goodsDesc.itemImages?eval>
+<#assign customAttributeList=goodsDesc.customAttributeItems?eval>
+<#assign specificationList=goodsDesc.specificationItems?eval>
 
 <!--页面顶部 结束-->
 	<div class="py-container">
@@ -25,13 +28,9 @@
 			<div class="crumb-wrap">
 				<ul class="sui-breadcrumb">
 					<li>
-						<a href="#">手机、数码、通讯</a>
-					</li>
-					<li>
-						<a href="#">手机</a>
-					</li>
-					<li>
-						<a href="#">Apple苹果</a>
+						<a href="#">${itemCat1}</a>
+						<a href="#">${itemCat2}</a>
+						<a href="#">${itemCat3}</a>
 					</li>
 					<li class="active">iphone 6S系类</li>
 				</ul>
@@ -43,7 +42,10 @@
 					<div class="zoom">
 						<!--默认第一个预览-->
 						<div id="preview" class="spec-preview">
-							<span class="jqzoom"><img jqimg="img/_/b1.png" src="img/_/s1.png" /></span>
+							<span class="jqzoom">
+								<#if (imageList?size>0)>
+								<img jqimg="${imageList[0].url}" src="${imageList[0].url}" width="400px" height="400px"/></span>
+								</#if>
 						</div>
 						<!--下方的缩略图-->
 						<div class="spec-scroll">
@@ -51,15 +53,10 @@
 							<!--左右按钮-->
 							<div class="items">
 								<ul>
-									<li><img src="img/_/s1.png" bimg="img/_/b1.png" onmousemove="preview(this)" /></li>
-									<li><img src="img/_/s2.png" bimg="img/_/b2.png" onmousemove="preview(this)" /></li>
-									<li><img src="img/_/s3.png" bimg="img/_/b3.png" onmousemove="preview(this)" /></li>
-									<li><img src="img/_/s1.png" bimg="img/_/b1.png" onmousemove="preview(this)" /></li>
-									<li><img src="img/_/s2.png" bimg="img/_/b2.png" onmousemove="preview(this)" /></li>
-									<li><img src="img/_/s3.png" bimg="img/_/b3.png" onmousemove="preview(this)" /></li>
-									<li><img src="img/_/s1.png" bimg="img/_/b1.png" onmousemove="preview(this)" /></li>
-									<li><img src="img/_/s2.png" bimg="img/_/b2.png" onmousemove="preview(this)" /></li>
-									<li><img src="img/_/s3.png" bimg="img/_/b3.png" onmousemove="preview(this)" /></li>
+									<#list >
+										<li><img src="${item.url}" bimg="${item.url}" onmousemove="preview(this)" /></li>
+									</#list>
+
 								</ul>
 							</div>
 							<a class="next">&gt;</a>
@@ -116,62 +113,21 @@
 					</div>
 					<div class="clearfix choose">
 						<div id="specification" class="summary-wrap clearfix">
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>选择颜色</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">金色<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">银色</a></dd>
-								<dd><a href="javascript:;">黑色</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>内存容量</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">16G<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">64G</a></dd>
-								<dd><a href="javascript:;" class="locked">128G</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>选择版本</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">公开版<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动版</a></dd>							
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>购买方式</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">官方标配<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动优惠版</a></dd>	
-								<dd><a href="javascript:;"  class="locked">电信优惠版</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>套　　装</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">保护套装<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;"  class="locked">充电套装</a></dd>	
-								
-							</dl>
-							
-							
+							<#list specificationList as specification>
+								<dl>
+									<dt>
+										<div class="fl title">
+											<i>${specification.attributeName}</i>
+										</div>
+									</dt>
+									<#list specification.attributeValue as item>
+										<dd><a href="javascript:;">${item}</a></dd>
+									</#list>
+
+								</dl>
+
+							</#list>
+
 						</div>
 					
 						<div class="summary-wrap">
@@ -408,20 +364,12 @@
 						<div class="tab-content tab-wraped">
 							<div id="one" class="tab-pane active">
 								<ul class="goods-intro unstyled">
-									<li>分辨率：1920*1080(FHD)</li>
-									<li>后置摄像头：1200万像素</li>
-									<li>前置摄像头：500万像素</li>
-									<li>核 数：其他</li>
-									<li>频 率：以官网信息为准</li>
-									<li>品牌： Apple</li>
-									<li>商品名称：APPLEiPhone 6s Plus</li>
-									<li>商品编号：1861098</li>
-									<li>商品毛重：0.51kg</li>
-									<li>商品产地：中国大陆</li>
-									<li>热点：指纹识别，Apple Pay，金属机身，拍照神器</li>
-									<li>系统：苹果（IOS）</li>
-									<li>像素：1000-1600万</li>
-									<li>机身内存：64GB</li>
+									<#list customAttributeList as item>
+										<#if item.value??>
+										<li>${item.text}:${item.value}</li>
+										</#if>
+									</#list>
+
 								</ul>
 								<div class="intro-detail">
 									${goodsDesc.introduction}
