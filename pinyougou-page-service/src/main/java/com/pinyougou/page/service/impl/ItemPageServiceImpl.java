@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
-import java.io.FileWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ public class ItemPageServiceImpl implements ItemPageService {
             //2.加载商品扩展表数据
             TbGoodsDesc goodsDesc = tbGoodsDescMapper.selectByPrimaryKey(goodsId);
             dataModel.put("goodsDesc", goodsDesc);
-            Writer out=new FileWriter(pagedir+goodsId+".html");
+            Writer out= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pagedir+goodsId+".html"),"UTF-8"));
             template.process(dataModel, out);
             out.close();
             return true;
