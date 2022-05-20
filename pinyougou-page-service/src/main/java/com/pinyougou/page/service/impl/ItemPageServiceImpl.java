@@ -4,9 +4,12 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.pinyougou.mapper.TbGoodsDescMapper;
 import com.pinyougou.mapper.TbGoodsMapper;
 import com.pinyougou.mapper.TbItemCatMapper;
+import com.pinyougou.mapper.TbItemMapper;
 import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsDesc;
+import com.pinyougou.pojo.TbItem;
+import com.pinyougou.pojo.TbItemExample;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,6 +38,9 @@ public class ItemPageServiceImpl implements ItemPageService {
     @Autowired
     private TbItemCatMapper tbItemCatMapper;
 
+    @Autowired
+    private TbItemMapper itemMapper;
+
     @Override
     public boolean genItemHtml(Long goodsId) {
         try {
@@ -51,9 +58,20 @@ public class ItemPageServiceImpl implements ItemPageService {
             String itemCat2 = tbItemCatMapper.selectByPrimaryKey(goods.getCategory2Id()).getName();
             String itemCat3 = tbItemCatMapper.selectByPrimaryKey(goods.getCategory3Id()).getName();
 
+
             dataModel.put("itemCat1",itemCat1);
             dataModel.put("itemCat2",itemCat2);
             dataModel.put("itemCat3",itemCat3);
+
+            //读取sku列表信息
+            TbItemExample example = new TbItemExample();
+            TbItemExample.Criteria criteria = example.createCriteria();
+            criteria.andGoodsIdEqualTo(goodsId);//spuId
+            criteria.andStatusEqualTo("1");//状态有效
+            example.setOrderByClause("is_default desc");//按是否默认字段进行降序排序，目的是返回的结果第一条为默认SKU
+            List<TbItem> itemList = itemMapper.selectByExample(example);
+
+            dataModel.put("itemList",itemList);
             Writer out= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pagedir+goodsId+".html"),"UTF-8"));
             template.process(dataModel, out);
 
