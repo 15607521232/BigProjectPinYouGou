@@ -3,7 +3,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
-import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +47,13 @@ public class GoodsController {
 
 	@Autowired
 	private Destination queueSolrDeleteDestination;
+
+	@Autowired
+	private Destination topicPageDestination;
+
+
+	@Autowired
+	private Destination topicDeleteDestination;
 
 	
 	/**
@@ -123,7 +129,17 @@ public class GoodsController {
 			goodsService.delete(ids);
 
 			//itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
-			jmsTemplate.send(queueSolrDeleteDestination, new MessageCreator() {
+			jmsTemplate.send(queueSolrDeleteDestination,
+					new MessageCreator() {
+				@Override
+				public Message createMessage(Session session) throws JMSException {
+					return session.createObjectMessage(ids);
+				}
+			});
+
+
+			//删除商品详细页
+			jmsTemplate.send(topicDeleteDestination, new MessageCreator() {
 				@Override
 				public Message createMessage(Session session) throws JMSException {
 					return session.createObjectMessage(ids);
@@ -171,8 +187,14 @@ public class GoodsController {
 					});
 
 					//生成商品详细页
-					for (Long goodsId:ids) {
-						itemPageService.genItemHtml(goodsId);
+					for (final Long goodsId:ids) {
+						//itemPageService.genItemHtml(goodsId);
+						jmsTemplate.send(topicPageDestination, new MessageCreator() {
+							@Override
+							public Message createMessage(Session session) throws JMSException {
+								return session.createTextMessage(goodsId+"");
+							}
+						});
 					}
 
 				}else {
@@ -188,16 +210,16 @@ public class GoodsController {
 
 	}
 
-	@Reference(timeout=40000)
-	private ItemPageService itemPageService;
-	/**
-	 * 生成静态页（测试）
-	 * @param goodsId
-	 */
-	@RequestMapping("/genHtml")
-	public void genHtml(Long goodsId){
-		itemPageService.genItemHtml(goodsId);
-	}
+//	@Reference(timeout=40000)
+//	private ItemPageService itemPageService;
+//	/**
+//	 * 生成静态页（测试）
+//	 * @param goodsId
+//	 */
+//	@RequestMapping("/genHtml")
+//	public void genHtml(Long goodsId){
+//		itemPageService.genItemHtml(goodsId);
+//	}
 
 
 	
