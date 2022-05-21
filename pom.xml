@@ -26,6 +26,8 @@
     <module>pinyougou-page-interface</module>
     <module>pinyougou-page-service</module>
       <module>pinyougou-page-web</module>
+      <module>springjms_producer</module>
+    <module>springjms_consumer</module>
 
   </modules>
 
