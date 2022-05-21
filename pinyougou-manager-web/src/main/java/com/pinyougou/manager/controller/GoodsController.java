@@ -2,10 +2,13 @@ package com.pinyougou.manager.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
-import com.pinyougou.search.service.ItemSearchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +18,12 @@ import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
 import entity.Result;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 /**
  * controller
  * @author Administrator
@@ -26,9 +35,20 @@ public class GoodsController {
 
 	@Reference
 	private GoodsService goodsService;
-
+	/*
 	@Reference(timeout = 10000)
 	private ItemSearchService itemSearchService;
+	 */
+
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
+	@Autowired
+	private Destination queueSolrDestination;
+
+	@Autowired
+	private Destination queueSolrDeleteDestination;
+
 	
 	/**
 	 * 返回全部列表
@@ -98,10 +118,18 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/delete")
-	public Result delete(Long [] ids){
+	public Result delete(final Long [] ids){
 		try {
 			goodsService.delete(ids);
-			itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
+
+			//itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
+			jmsTemplate.send(queueSolrDeleteDestination, new MessageCreator() {
+				@Override
+				public Message createMessage(Session session) throws JMSException {
+					return session.createObjectMessage(ids);
+				}
+			});
+
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,7 +160,15 @@ public class GoodsController {
 				List<TbItem> itemList =goodsService.findItemListByGoodsIdandStatus(ids,status);
 				//调用搜索接口实现数据批量导入
 				if(itemList.size()>0){
-					itemSearchService.importList(itemList);
+					//itemSearchService.importList(itemList);
+					final String jsonString = JSON.toJSONString(itemList);//转换为json传输
+					jmsTemplate.send(queueSolrDestination, new MessageCreator() {
+						@Override
+						public Message createMessage(Session session) throws JMSException {
+
+							return session.createTextMessage(jsonString);
+						}
+					});
 
 					//生成商品详细页
 					for (Long goodsId:ids) {
