@@ -133,6 +133,12 @@ public class GoodsController {
 				//调用搜索接口实现数据批量导入
 				if(itemList.size()>0){
 					itemSearchService.importList(itemList);
+
+					//生成商品详细页
+					for (Long goodsId:ids) {
+						itemPageService.genItemHtml(goodsId);
+					}
+
 				}else {
 					System.out.println("没有明细数据");
 				}
