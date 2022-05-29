@@ -71,4 +71,7 @@ public class FastDFSClient {
 	public String uploadFile(byte[] fileContent, String extName) throws Exception {
 		return uploadFile(fileContent, extName, null);
 	}
+
+
+
 }
