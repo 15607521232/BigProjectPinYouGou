@@ -16,7 +16,7 @@
 
 </head>
 
-<body ng-app="pinyougou" ng-controller="cartController" ng-init=findCartList()">
+<body ng-app="pinyougou" ng-controller="cartController" ng-init="findCartList()">
 	<!--head-->
 	<div class="top">
 		<div class="py-container">
@@ -74,7 +74,7 @@
 						<span class="shopname self">{{cart.sellerName}} 【商家ID:{{cart.sellerId}}】</span>
 					</div>
 					<div class="cart-body">
-						<div class="cart-list" ng-repeat="orderItem in orderItemList">
+						<div class="cart-list" ng-repeat="orderItem in cart.orderItemList">
 							<ul class="goods-list yui3-g">
 								<li class="yui3-u-1-24">
 									<input type="checkbox" name="" id="" value="" />

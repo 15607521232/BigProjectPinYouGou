@@ -98,9 +98,6 @@ public class CartServiceImpl implements CartService {
     }
 
     private TbOrderItem createorderItem(TbItem tbItem,Integer num){
-        if(num<0){
-            throw new RuntimeException("数量非法");
-        }
 
         TbOrderItem orderItem = new TbOrderItem();
         orderItem.setGoodsId(tbItem.getGoodsId());
