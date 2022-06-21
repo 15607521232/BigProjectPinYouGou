@@ -7,6 +7,7 @@ import com.pinyougou.cart.service.CartService;
 import com.pinyougou.pojogroup.Cart;
 import entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,8 @@ public class CartController {
 
     @RequestMapping("/findCartList")
     public List<Cart> findCartList(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("当前登陆人+ "+username);
         String cartListString = util.CookieUtil.getCookieValue(request,"cartList","UTF-8");
         if(cartListString==null || cartListString.equals("")){
             cartListString="[]";
