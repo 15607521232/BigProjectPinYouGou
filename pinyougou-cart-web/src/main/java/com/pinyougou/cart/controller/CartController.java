@@ -34,25 +34,50 @@ public class CartController {
     @RequestMapping("/findCartList")
     public List<Cart> findCartList(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println("当前登陆人+ "+username);
         String cartListString = util.CookieUtil.getCookieValue(request,"cartList","UTF-8");
-        if(cartListString==null || cartListString.equals("")){
-            cartListString="[]";
+
+            if(cartListString==null || cartListString.equals("")){
+                cartListString="[]";
+            }
+            List<Cart> cartList_cookie = JSON.parseArray(cartListString,Cart.class);
+
+        if(username.equals("anonymousUser")){
+            return cartList_cookie;
         }
-        List<Cart> cartList_cookie = JSON.parseArray(cartListString,Cart.class);
-        return cartList_cookie;
+        else{
+            List<Cart> cartList_redis = cartService.findCartListFromRedis(username);
+            if(cartList_cookie.size()>0){
+                cartList_redis=cartService.mergeCartList(cartList_redis,cartList_cookie);
+                //清除本地cookie数据
+                util.CookieUtil.deleteCookie(request,response,"cartList");
+                //将合并后的数据存入redis
+                cartService.saveCartListToRedis(username,cartList_redis);
+            }
+            return cartList_redis;
+
+        }
+
     }
 
 
 
     @RequestMapping("/addGoodsToCartList")
     public Result addGoodsToCartList(Long itemId,Integer num){
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+
         try{
             List<Cart> cartList = findCartList();
             cartList = cartService.addGoodsToCartList(cartList,itemId,num);
-            util.CookieUtil.setCookie(request,response,"cartList",JSON.toJSONString(cartList),3600*24,"UTF-8");
-            return new Result(true,"添加成功");
+            if(username.equals("anonymousUser")){ //未登录
+                util.CookieUtil.setCookie(request,response,"cartList",JSON.toJSONString(cartList),3600*24,"UTF-8");
 
+            }else {
+                cartService.saveCartListToRedis(username,cartList);
+
+            }
+            return new Result(true,"添加成功");
 
         }catch (Exception e){
             e.printStackTrace();
