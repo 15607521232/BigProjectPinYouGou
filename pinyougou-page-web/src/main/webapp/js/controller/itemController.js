@@ -1,5 +1,5 @@
  //控制层 
-app.controller('itemController' ,function($scope){	
+app.controller('itemController' ,function($scope,$http){
 	
 	
 	$scope.addNum=function(x){
@@ -66,7 +66,17 @@ app.controller('itemController' ,function($scope){
 
 	//添加商品到购物车
 	$scope.addToCart=function(){
-		alert('skuID:' +$scope.sku.id);
+
+		$http.get('http://localhost:9107/cart/addGoodsToCartList.do?itemId='+$scope.sku.id+'&num='+$scope.num,{'withCredentials':true}).success(
+			function (response){
+				if(response.success){
+					location.href='http://localhost:9107/cart.html'
+				}else {
+					alert(response.message);
+				}
+			}
+		)
+
 	}
     
 });	
