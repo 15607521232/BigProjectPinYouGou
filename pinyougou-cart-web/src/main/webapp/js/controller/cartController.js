@@ -31,6 +31,15 @@ app.controller('cartController',function($scope,cartService){
         );
     }
 
+    //获取当前用户的地址列表
+    $scope.findAddressList=function (){
+        cartService.findAddressList().success(
+            function (response){
+                $scope.addressList=response;
+            }
+        )
+    }
+
 
 
 
