@@ -36,8 +36,36 @@ app.controller('cartController',function($scope,cartService){
         cartService.findAddressList().success(
             function (response){
                 $scope.addressList=response;
+                //设置默认地址
+                for (let i = 0; i < $scope.addressList.length; i++) {
+                    if($scope.addressList[i].isDefault=='1'){
+                        $scope.address= $scope.addressList[i];
+                        break;
+                    }
+                }
             }
         )
+    }
+
+    //選擇地址
+    $scope.selectAddress=function (address){
+        $scope.address=address;
+    }
+
+    //判断是否是当前选中的地址
+    $scope.isSelectedAddress=function (address){
+        if(address==$scope.address){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+
+    $scope.order={paymentType:'1'}//订单对象
+    $scope.selectPayType=function (type){
+        $scope.order.paymentType=type;
+
     }
 
 
