@@ -68,6 +68,25 @@ app.controller('cartController',function($scope,cartService){
 
     }
 
+    $scope.submitOrder=function (){
+        $scope.order.receiverAreaName=$scope.address.address;
+        $scope.order.receiverMobile=$scope.address.mobile;
+        $scope.order.reciver=$scope.address.contact;
+        cartService.submitOrder($scope.order).success(
+            function (response){
+                if(response.success){
+                    if($scope.order.paymentType=='1'){
+                        location.href="pay.html"
+                    }else {
+                        location.href="paysuccess.html"
+                    }
+                }else {
+                    alert(response.message);
+                }
+            }
+        )
+    }
+
 
 
 

@@ -27,4 +27,8 @@ app.service('cartService',function($http){
         return $http.get('address/findListByLoginUser.do')
     }
 
+    this.submitOrder=function (order){
+        return $http.post('/order/add.do',order)
+    }
+
 })
