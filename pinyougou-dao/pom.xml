@@ -10,6 +10,25 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>pinyougou-dao</artifactId>
+
+    <properties>
+        <env>dev</env>
+    </properties>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>pro</id>
+            <properties>
+                <env>pro</env>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
         <!-- Mybatis -->
         <dependency>
@@ -46,6 +65,19 @@
             <version>4.0.0</version>
         </dependency>
     </dependencies>
+<build>
+    <filters>
+        <filter>
+            src/main/resources/filter/db_${env}.properties
+        </filter>
+    </filters>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+        </resource>
+    </resources>
+</build>
 
 
 
